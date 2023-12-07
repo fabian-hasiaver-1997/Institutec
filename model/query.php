@@ -648,6 +648,28 @@ function insertTeacher($name, $surname, $phone, $email, $direction, $height, $dn
         return false;
     }
 }
+function create_account_teacher($value1,$value2,$value3,$value4){
+    $query = "INSERT INTO internal_users (name, dni, password,mail, fk_rol_id, state)
+          VALUES (:name, :dni, :password,:mail, 2, 1)";
+
+
+$statement = $this->pdo->prepare($query);
+$statement->bindParam(':name', $value1, PDO::PARAM_STR);
+$statement->bindParam(':dni', $value2, PDO::PARAM_STR);
+$statement->bindParam(':password', $value3, PDO::PARAM_STR);
+$statement->bindParam(':mail', $value4, PDO::PARAM_STR);
+
+
+try{
+    if($statement->execute()){
+        return true;
+    }
+}catch (PDOException $e) {
+    echo "Error en la inserción: " . $e->getMessage();
+    return false;
+}
+
+}
 
 public function getUserTeacher($id_teacher)
 {
