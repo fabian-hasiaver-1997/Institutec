@@ -25,14 +25,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
     }
 </style>
   <title>Profesores </title>
+  <link rel="shortcut icon" href="../images/teacher.ico">
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+  <!--AdminLTE CSS-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
      <!-- Site Icons -->
      <link rel="shortcut icon" href="../images/teacher.ico">
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
-
-  
+  <!--AdminLTE CSS-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../css/css-students/adminlte.min.css">
 </head>
@@ -47,10 +56,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="dasboard_home_preceptor.php" class="nav-link">Inicio</a>
+        <a href="#" class="nav-link">Inicio</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="view_student_notes.php" class="nav-link">ver las notas de los alumnos</a>
+        <a href="view_student_notes.php" class="nav-link">Ver las notas de los alumnos</a>
       </li>
       
     </ul>
@@ -158,7 +167,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <a href="#" class="nav-link active">
               
               <p>
-                datos del Profesor
+                Datos del Profesor
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -204,66 +213,73 @@ scratch. This page gets rid of all links and provides the needed markup only.
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-   
+    <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <!-- Your Content Header code here -->
     <div class="container">
-    <div class="row py-3">
+      <div class="row py-3">
         <div class="col">
-            <table class="table table-border small" id="myTable">
-                <thead>
+          <table class="table table-border small" id="myTable">
+          <thead>
                     <tr class="bg-primary">
-                        <th class="text-center long-letter">Nombre de las Materias que imparte</th>
+                        <th class="text-center long-letter">Nombre del alumno</th>
+                        <th class="text-center long-letter">Apellido</th>
+                        <th class="text-center long-letter">carrera</th>
+                        <th class="text-center long-letter">materia</th>
+                        <th class="text-center long-letter">dni</th>
                         <th class="text-center">Detalles</th>
+                       
+
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    foreach ($resul as $row) { ?>
+                    foreach ($students as $row) { ?>
                         <tr>
+                            <td class="text-center align-middle"><?php echo $row['name'] ?></td>
+                            <td class="text-center align-middle"><?php echo $row['last_name'] ?></td>
+                            <td class="text-center align-middle"><?php echo $row['career_name'] ?></td>
                             <td class="text-center align-middle"><?php echo $row['subject_name'] ?></td>
-                            <td><a href="../views/students_teacher.php?id=<?php echo $row['id_subject'] ?>" class="btn btn-info float-right"><i class="fas fa-info-circle"></i></a></td>
-                        
+                            <td class="text-center align-middle"><?php echo $row['uk_dni'] ?></td>
+                            <td><a href="../views/update_note.php?id=<?php echo $row['id_student'] ?>" class="btn btn-info float-right"><i class="fas fa-info-circle"></i></a></td>
                         </tr>
                     <?php } ?>
                 </tbody>
             </table>
-            <div id="pagination">
-                <button id="previous" class="btn btn-outline-primary">Anterior</button>
-                <span id="page">Pagina 1</span>
-                <button id="next" class="btn btn-outline-primary">Siguiente</button>
-            </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-    <div class="p-3">
-      <h5>INSTITUTEC</h5>
-      
-      <p>Esta página carga y organiza notas académicas, además de hacer un seguimiento de las materias que estás estudiando o has estudiado. Simplifica la gestión de tus calificaciones y ofrece una visión clara de tu progreso académico.<span style="margin-left: 10px;"> <i class="fa-regular fa-comments"></i> </span></p>
 
-    </div>
-  </aside>
-  <!-- /.control-sidebar -->
-
-  <!-- Main Footer -->
-  <footer class="main-footer">
-    
-    
-    <!-- Default to the left -->
-    <strong>Copyright &copy; 2023 <a href="../views/about.php">Institutec</a>.</strong>Todos los derechos reservados.
-  </footer>
-</div>
-<!-- ./wrapper -->
-
-<!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
 <script src="../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+<!-- Buttons for DataTables -->
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
 <!-- AdminLTE App -->
-<script src="../dist/js/adminlte.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#myTable').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        'copy', 'csv', 'excel', 'pdf'
+      ]
+    });
+  });
+</script>
 </body>
 </html>
 

@@ -13,12 +13,14 @@ if (isset($_POST['submit'])) {
     if ($resul != false) {
         $name = $resul['name'];
         $rol = $resul['fk_rol_id'];
+        $dni=$resul['dni'];
         $state = $resul['state'];
         $user_id = $resul['id_user'];
         $changed = $resul['password_changed'];
         $_SESSION['name'] = $name;
         $_SESSION['fk_rol_id'] = $rol;
         $_SESSION['id_user'] = $user_id;
+        $_SESSION['dni']=$dni;
 
         if ($state == 1) {
             $_SESSION['state'] = $state;

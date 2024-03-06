@@ -1,7 +1,6 @@
 <?php
 require_once '../controllers/stop_session.php';
-require_once '../controllers/views_logic_teacher.php';
-require_once '../controllers/views_logic_table.php';
+require_once '../controllers/crud_studen_notes.php';
 session_start();
 checkSession();
 ?>
@@ -31,7 +30,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
-
+  <link rel="shortcut icon" href="../images/teacher.ico">
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+  <!--AdminLTE CSS-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
   
   <!-- Theme style -->
   <link rel="stylesheet" href="../css/css-students/adminlte.min.css">
@@ -47,10 +54,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="dasboard_home_preceptor.php" class="nav-link">Inicio</a>
+        <a href="../views/dashboard-teacher.php" class="nav-link">Inicio</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="view_student_notes.php" class="nav-link">ver las notas de los alumnos</a>
+        <a href="#" class="nav-link">Ver notas</a>
       </li>
       
     </ul>
@@ -154,28 +161,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
-              
-              <p>
-                datos del Profesor
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-
-                  <p>Nombre: <?php echo $get_teacher_data['name']; ?></p>
-                  <br>
-                  <p>Apellido: <?php echo $get_teacher_data['surname']; ?></p>
-                  <br>
-                  <p>Email: <?php echo $get_teacher_data['mail']; ?></p>
-                  <br>
-                  <p>Telefono: <?php echo $get_teacher_data['phone']; ?></p>
-              </li>
-            
-        
-          <li class="nav-item d-none d-sm-inline-block text-center">
                 <a href="../controllers/destroy_Session.php" class="nav-link">Cerrar Session</a>
               </li>
         </ul>
@@ -204,36 +189,48 @@ scratch. This page gets rid of all links and provides the needed markup only.
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-   
     <div class="container">
-    <div class="row py-3">
+      <div class="row py-3">
         <div class="col">
-            <table class="table table-border small" id="myTable">
-                <thead>
+          <table class="table table-border small" id="myTable">
+            <thead>
                     <tr class="bg-primary">
-                        <th class="text-center long-letter">Nombre de las Materias que imparte</th>
-                        <th class="text-center">Detalles</th>
+                        <th class="text-center long-letter">Nombre alumno</th>
+                        <th class="text-center long-letter">Apellido</th>
+                        <th class="text-center long-letter">Dni</th>
+                        <th class="text-center long-letter">Carrera</th>
+                        <th class="text-center long-letter">Primer Parcial</th>
+                        <th class="text-center long-letter">Segundo Parcial</th>
+                        <th class="text-center long-letter">Recuperatortio 1</th>
+                        <th class="text-center long-letter">Recuperatortio 2</th>
+
+                        
+                       
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    foreach ($resul as $row) { ?>
+                    foreach ($element as $row) { ?>
                         <tr>
-                            <td class="text-center align-middle"><?php echo $row['subject_name'] ?></td>
-                            <td><a href="../views/students_teacher.php?id=<?php echo $row['id_subject'] ?>" class="btn btn-info float-right"><i class="fas fa-info-circle"></i></a></td>
+                            <td class="text-center align-middle"><?php echo $row['name'] ?></td>
+                            <td class="text-center align-middle"><?php echo $row['last_name'] ?></td>
+                            <td class="text-center align-middle"><?php echo $row['dni'] ?></td>
+                            <td class="text-center align-middle"><?php echo $row['career_name'] ?></td>
+                            <td class="text-center align-middle"><?php echo $row['partial_1'] ?></td>
+                            <td class="text-center align-middle"><?php echo $row['partial_2'] ?></td>
+                            <td class="text-center align-middle"><?php echo $row['recuperatory_1'] ?></td>
+                            <td class="text-center align-middle"><?php echo $row['recuperatory_2'] ?></td>
                         
                         </tr>
                     <?php } ?>
                 </tbody>
-            </table>
-            <div id="pagination">
-                <button id="previous" class="btn btn-outline-primary">Anterior</button>
-                <span id="page">Pagina 1</span>
-                <button id="next" class="btn btn-outline-primary">Siguiente</button>
-            </div>
+          </table>
         </div>
+      </div>
     </div>
+  </div>
 </div>
+    
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
@@ -258,12 +255,33 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <!-- REQUIRED SCRIPTS -->
 
+
 <!-- jQuery -->
 <script src="../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+<!-- Buttons for DataTables -->
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
 <!-- AdminLTE App -->
-<script src="../dist/js/adminlte.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#myTable').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        'copy', 'csv', 'excel', 'pdf'
+      ]
+    });
+  });
+</script>
 </body>
 </html>
 

@@ -1232,6 +1232,162 @@ public function delete_Correlative($value) {
     return $statement->execute();
 }
 
+
+public function getteacher($table, $value)
+{
+    try {
+        $query = "SELECT * FROM $table WHERE dni = :dni AND state = 1";
+        $statement = $this->pdo->prepare($query);
+        $value=intval($value);
+        // Asegúrate de que $value sea un entero o realiza la validación necesaria aquí
+        
+        $statement->bindParam(':dni', $value, PDO::PARAM_INT);
+        
+        $statement->execute();
+        
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        // Manejar el error de alguna manera, por ejemplo, registrándolo o lanzando una excepción personalizada
+        // Ejemplo de registro de error:
+        error_log('Error en la consulta SQL: ' . $e->getMessage());
+        return []; // Otra acción en caso de error, como devolver un array vacío
+    }
 }
+
+public function get_subject_teacher($value)
+{
+    $query = "SELECT teachers.name AS 'name_teacher', teachers.dni AS 'dni', subjects.id_subjects AS 'id_subject',
+    teachers.id_teacher AS 'id_teacher',
+     subjects.subject_name AS 'subject_name',teachers.id_teacher AS 'id_teacher' FROM teachers_subjects 
+     JOIN teachers ON teachers_subjects.fk_teacher_id = teachers.id_teacher 
+     JOIN subjects ON teachers_subjects.fk_subject_id = subjects.id_subjects WHERE teachers.dni = :dni; ";
+
+    $statement = $this->pdo->prepare($query);
+    $statement->bindParam(':dni', $value, PDO::PARAM_INT);
+    $statement->execute();
+
+    // Recuperar los resultados
+    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    return $results;
+}
+
+
+
+public function getMultiple_students_subject($id)
+{
+    $query = "SELECT subjects.id_subjects AS 'id_subject',
+    estudents.name AS 'name',
+    estudents.last_name AS 'last_name',
+    estudents. 	uk_dni  AS 'uk_dni',
+    careers.career_name AS 'career_name',
+    subjects.subject_name AS 'subject_name',
+    students_subjects.fk_student_id AS 'id_student'
+    FROM students_subjects
+    JOIN estudents ON students_subjects.fk_student_id = estudents.id_estudents
+    JOIN subjects ON students_subjects.fk_subject_id = subjects.id_subjects
+    JOIN careers ON estudents.fk_career_id = careers.id_career
+    WHERE subjects.id_subjects = :id_subjects";
+
+
+    $statement = $this->pdo->prepare($query);
+    $statement->bindParam(':id_subjects', $id, PDO::PARAM_INT);
+    $statement->execute();
+    
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+
+public function insert_update_notes($value1,$value2,$value3,$value4,$value5,$value6,$value7) {
+    $query = "INSERT INTO notes_student(fk_student_id, fk_teacher_id ,partial_1,partial_2,recuperatory_1,recuperatory_2,integrate,state)
+    VALUES (:fk_student_id,:fk_teacher_id,:partial_1,:partial_2,:recuperatory_1,:recuperatory_2,:integrate,1)";
+
+
+    $statement = $this->pdo->prepare($query);
+
+    $statement->bindParam(':fk_student_id', $value1, PDO::PARAM_INT);
+    $statement->bindParam(':fk_teacher_id', $value2, PDO::PARAM_INT);
+    $statement->bindParam(':partial_1', $value3, PDO::PARAM_INT);
+    $statement->bindParam(':partial_2', $value4, PDO::PARAM_INT);
+    $statement->bindParam(':recuperatory_1', $value5, PDO::PARAM_INT);
+    $statement->bindParam(':recuperatory_2', $value6, PDO::PARAM_INT);
+    $statement->bindParam(':integrate', $value7, PDO::PARAM_INT);
+
+    try {
+        if ($statement->execute()) {
+            return true; // Devuelve verdadero si la inserción fue exitosa
+        }
+    } catch (PDOException $e) {
+        echo "Error en la inserción: " . $e->getMessage();
+        return false;
+    }
+}
+
+
+public function get_teacher_id_by_dni($dni)
+{
+    $query = "SELECT id_teacher 
+              FROM teachers 
+              WHERE dni = :dni";
+
+    $statement = $this->pdo->prepare($query);
+    $statement->bindParam(':dni', $dni, PDO::PARAM_INT);
+    $statement->execute();
+
+    // Recuperar los resultados
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+    if ($result) {
+        return $result['id_teacher'];
+    } else {
+        return null; // O podrías lanzar una excepción u otro manejo de error si no se encuentra ningún profesor con ese DNI
+    }
+}
+
+
+public function get_student($value)
+{
+    $query = "SELECT * FROM estudents WHERE id_estudents = :id_estudents AND state = 1";
+    $statement = $this->pdo->prepare($query);
+    $statement->bindParam(':id_estudents', $value, PDO::PARAM_INT);
+    $statement->execute();
+
+    return $statement->fetch(PDO::FETCH_ASSOC);
+}
+
+
+
+public function show_element() {
+    $query = "SELECT 
+    estudents.name AS 'name',
+    estudents.last_name AS 'last_name',
+    estudents.uk_dni AS 'dni',
+    careers.career_name AS 'career_name',
+    notes_student.partial_1 AS 'partial_1',
+    notes_student.partial_2 AS 'partial_2',
+    notes_student.recuperatory_1 AS 'recuperatory_1',
+    notes_student.recuperatory_2 AS 'recuperatory_2',
+    notes_student.integrate AS 'integrate'
+FROM notes_student
+JOIN estudents ON notes_student.fk_student_id = estudents.id_estudents
+JOIN teachers ON notes_student.fk_teacher_id = teachers.id_teacher
+JOIN careers ON estudents.fk_career_id = careers.id_career;
+";
+
+$statement=$this->pdo->prepare($query);
+$statement->execute();
+$list_data=$statement->fetchAll();
+    
+    return $list_data;
+
+}
+
+
+
+}
+
+
+
 
 ?>

@@ -1,7 +1,6 @@
 <?php
 require_once '../controllers/stop_session.php';
-require_once '../controllers/views_logic_teacher.php';
-require_once '../controllers/views_logic_table.php';
+require_once '../controllers/crud_update_notes.php';
 session_start();
 checkSession();
 ?>
@@ -47,10 +46,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="dasboard_home_preceptor.php" class="nav-link">Inicio</a>
+        <a href="../views/dashboard-teacher.php" class="nav-link">Inicio</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="view_student_notes.php" class="nav-link">ver las notas de los alumnos</a>
+        <a href="#" class="nav-link">Carga de notas</a>
       </li>
       
     </ul>
@@ -154,27 +153,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
-              
-              <p>
-                datos del Profesor
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-
-                  <p>Nombre: <?php echo $get_teacher_data['name']; ?></p>
-                  <br>
-                  <p>Apellido: <?php echo $get_teacher_data['surname']; ?></p>
-                  <br>
-                  <p>Email: <?php echo $get_teacher_data['mail']; ?></p>
-                  <br>
-                  <p>Telefono: <?php echo $get_teacher_data['phone']; ?></p>
-              </li>
-            
-        
+          
           <li class="nav-item d-none d-sm-inline-block text-center">
                 <a href="../controllers/destroy_Session.php" class="nav-link">Cerrar Session</a>
               </li>
@@ -205,35 +184,55 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </div>
     <!-- /.content-header -->
    
-    <div class="container">
-    <div class="row py-3">
-        <div class="col">
-            <table class="table table-border small" id="myTable">
-                <thead>
-                    <tr class="bg-primary">
-                        <th class="text-center long-letter">Nombre de las Materias que imparte</th>
-                        <th class="text-center">Detalles</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    foreach ($resul as $row) { ?>
-                        <tr>
-                            <td class="text-center align-middle"><?php echo $row['subject_name'] ?></td>
-                            <td><a href="../views/students_teacher.php?id=<?php echo $row['id_subject'] ?>" class="btn btn-info float-right"><i class="fas fa-info-circle"></i></a></td>
-                        
-                        </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-            <div id="pagination">
-                <button id="previous" class="btn btn-outline-primary">Anterior</button>
-                <span id="page">Pagina 1</span>
-                <button id="next" class="btn btn-outline-primary">Siguiente</button>
-            </div>
+    <center><h5>Panel para cargarle la notas a <?php echo $get_Student['name']." ".$get_Student['last_name']; ?></h5></center>
+    <div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            Cargarle la nota
+            <button type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
+        <div class="card-body">
+    <form action="../controllers/crud_update_notes.php" method="post">
+        <input type="hidden" name="student" value="<?php echo $get_Student['id_estudents']; ?>">
+
+        <h3 class="mb-4">Cargar Notas al alumno</h3>
+
+        <div class="form-group">
+            <label for="partial_1">Parcial 1</label>
+            <input type="number" class="form-control" name="partial_1" required min="1" max="10">
+        </div>
+
+        <div class="form-group">
+            <label for="partial_2">Parcial 2</label>
+            <input type="number" class="form-control" name="partial_2" required min="1" max="10">
+        </div>
+
+        <div class="form-group">
+            <label for="recuperatory_1">Recuperatorio 1</label>
+            <input type="number" class="form-control" name="recuperatory_1" required min="1" max="10">
+        </div>
+
+        <div class="form-group">
+            <label for="recuperatory_2">Recuperatorio 2</label>
+            <input type="number" class="form-control" name="recuperatory_2" required min="1" max="10">
+        </div>
+
+        <div class="form-group">
+            <label for="integrate">Integrador</label>
+            <input type="number" class="form-control" name="integrate" required min="1" max="10">
+        </div>
+
+        <div class="text-right">
+            <button type="submit" class="btn btn-primary" name="keep">Guardar Cambios</button>
+        </div>
+    </form>
+</div>
+
     </div>
 </div>
+
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
